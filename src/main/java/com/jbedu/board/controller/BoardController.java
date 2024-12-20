@@ -16,7 +16,7 @@ public class BoardController {
 	
 	private JdbcTemplate template;
 	
-	@Autowired
+	@Autowired  // 컨테이터 만들어져 있는 bean(객체)가 자동으로 DI 됨
 	public void setTemplate(JdbcTemplate template) { // DI -> 의존성 주입(Dependency Injection)
 		this.template = template;
 		Constant.template = this.template;
