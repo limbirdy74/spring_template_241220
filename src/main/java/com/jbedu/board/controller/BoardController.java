@@ -41,4 +41,13 @@ public class BoardController {
 		
 		return "redirect:boardList";
 	}	
+	
+	@RequestMapping(value = "/boardList")
+	public String boardList(HttpServletRequest request, Model model) {
+		
+		BoardDao boardDao = new BoardDao();
+		model.addAttribute("bDtos", boardDao.boardList());
+		
+		return "boardList";
+	}	
 }

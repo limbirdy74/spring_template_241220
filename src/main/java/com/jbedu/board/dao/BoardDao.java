@@ -3,10 +3,13 @@ package com.jbedu.board.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 
+import com.jbedu.board.dto.BoardDto;
 import com.jbedu.board.util.Constant;
 
 public class BoardDao {
@@ -42,6 +45,15 @@ public class BoardDao {
 			}
 		});
 
+	}
+	
+	// 글목록보기
+	public ArrayList<BoardDto> boardList() {
+		String sql = "SELECT * FROM mvc_board ORDER BY bnum DESC";
+		
+		ArrayList<BoardDto> bDtos = (ArrayList<BoardDto>) this.template.query(sql, new BeanPropertyRowMapper(BoardDto.class));
+		
+		return bDtos;
 	}
 
 }
