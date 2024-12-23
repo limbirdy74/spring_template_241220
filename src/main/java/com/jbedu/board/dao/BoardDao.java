@@ -8,19 +8,14 @@ import java.util.ArrayList;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import com.jbedu.board.dto.BoardDto;
 import com.jbedu.board.util.Constant;
 
 public class BoardDao {
 	
-//	private DataSource dataSource;
 	private JdbcTemplate template;
-	
-
-//	public void setTemplate(JdbcTemplate template) { // DI -> 의존성 주입(Dependency Injection)
-//		this.template = template;
-//	}
 	
 	public BoardDao() {
 		this.template = Constant.template;
@@ -54,6 +49,24 @@ public class BoardDao {
 		ArrayList<BoardDto> bDtos = (ArrayList<BoardDto>) this.template.query(sql, new BeanPropertyRowMapper(BoardDto.class));
 		
 		return bDtos;
+	}
+	
+	// 글삭제하기. template 얘들은 final 로 해야 오류 안남
+	public void boardDelete(final String bnum) {
+		
+		String sql = "DELETE FROM mvc_board WHERE bnum = ?";
+		
+		// u -> 자동완성 다섯번쨰 것. null대신 new 자동완성 두번쨰
+		this.template.update(sql, new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement pstmt) throws SQLException {
+				// TODO Auto-generated method stub
+				pstmt.setString(1, bnum);
+				
+			}
+		});	
+		
 	}
 
 }

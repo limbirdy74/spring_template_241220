@@ -14,7 +14,7 @@ import com.jbedu.board.util.Constant;
 @Controller
 public class BoardController {
 	
-	private JdbcTemplate template;
+	private JdbcTemplate template;  // servlet-context.xml 에 만들어진 것을 주입받아야 함. DI(dependency injection)
 	
 	@Autowired  // 컨테이터 만들어져 있는 bean(객체)가 자동으로 DI 됨
 	public void setTemplate(JdbcTemplate template) { // DI -> 의존성 주입(Dependency Injection)
@@ -49,5 +49,23 @@ public class BoardController {
 		model.addAttribute("bDtos", boardDao.boardList());
 		
 		return "boardList";
-	}	
+	}
+	
+	@RequestMapping(value = "/delete_form")
+	public String delete_form() {
+		return "delete_form";
+	}
+	
+	@RequestMapping(value = "/deleteOk")
+	public String deleteOk(HttpServletRequest request, Model model) {
+
+		String bnum = request.getParameter("bnum");
+		
+		// command 에서 해야 하나 그냥 해보자
+		
+		BoardDao boardDao = new BoardDao();
+		boardDao.boardDelete(bnum);
+		
+		return "redirect:boardList";
+	}
 }
